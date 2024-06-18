@@ -12,9 +12,13 @@
 
 ## 部署
 1、准备一台windows或者windows server。
+
 2、安装办公软件（office或WPS，PDF），安装您本地的打印机驱动。
+
 3、安装python环境。
+
 4、安装必要依赖模块，pip install -r requirements.txt
+
 5、启动服务python app.py
 
 ### 效果
