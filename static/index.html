@@ -1,0 +1,113 @@
+
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>XX公司云打印服务</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+                text-align: center;
+            }
+            h2 {
+                margin-bottom: 20px;
+            }
+            label {
+                display: block;
+                margin-bottom: 10px;
+            }
+            input[type="file"] {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                width: 100%;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            button:disabled {
+                background-color: #6c757d;
+                cursor: not-allowed;
+            }
+            .message {
+                margin-top: 20px;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .success {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            .error {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+        </style>
+        <script>
+            function toggleButton() {
+                var checkbox = document.getElementById('confirm');
+                var printer = document.getElementById('printer');
+                var button = document.getElementById('submitButton');
+                button.disabled = !checkbox.checked || printer.value === "";
+            }
+
+            function validatePrinterSelection() {
+                var printer = document.getElementById('printer');
+                var button = document.getElementById('submitButton');
+                var checkbox = document.getElementById('confirm');
+                button.disabled = printer.value === "" || !checkbox.checked;
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo">
+            <h2>XX公司云打印服务</h2>
+            {% if message %}
+                <div class="message {{ message_class }}">{{ message }}</div>
+            {% endif %}
+            <form method="POST" enctype="multipart/form-data">
+                <label for="file">选择文件：</label>
+                <input type="file" id="file" name="file"><br><br>
+                <label for="printer">选择云打印机：</label>
+                <select id="printer" name="printer" onchange="validatePrinterSelection()">
+                    <option value="">请选择打印机</option>
+                    {% for printer in printers %}
+                        <option value="{{ printer }}">{{ printer }}</option>
+                    {% endfor %}
+                </select><br><br>
+                <label for="confirm">
+                    <input type="checkbox" id="confirm" onclick="toggleButton()">
+                    我已确认“云打印机”并同意《注意事项》
+                </label>
+                <button type="submit" id="submitButton" disabled>使用所选云打印机直接打印</button>
+            </form><br>
+            <div style="text-align: left;">
+                <a>注意事项：</a><br>
+                <a>1、无需安装任何驱动上传文件，选择所选的云打印机直接打印。</a><br>
+                <a>2、打印仅限txt，jpg，jpeg，png，gif，doc，docx，xls，xlsx，pdf等常规文档格式。</a><br>
+                <a>3、默认所选的文件整个文档黑白打印，个性化设置请使用PC端本地打印。</a><br>
+            </div>
+        </div>
+    </body>
+    </html>
